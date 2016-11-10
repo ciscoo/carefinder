@@ -22,3 +22,22 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Hospital::class, function (Faker\Generator $faker) {
+    return [
+        'provider_id' => $faker->randomNumber(6),
+        'name' => $faker->name(),
+        'address' => $faker->streetAddress(),
+        'city' => $faker->city(),
+        'state' =>  $faker->state(),
+        'zipcode' => $faker->postCode(),
+        'county' => $faker->city(),
+        'phone' => $faker->e164PhoneNumber(),
+        'type' => $faker->word(),
+        'ownership' => $faker->company(),
+        'emergency_services' => $faker->randomElement([true, false]),
+        'human_address' => $faker->address(),
+        'latitude' => $faker->latitude(),
+        'longitude' => $faker->longitude()
+    ];
+});
