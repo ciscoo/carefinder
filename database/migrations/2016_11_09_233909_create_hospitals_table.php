@@ -15,7 +15,7 @@ class CreateHospitalsTable extends Migration
     {
         Schema::create('hospitals', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('provider_id');
+            $table->string('provider_id');
             $table->string('name');
             $table->string('address');
             $table->string('city');
@@ -26,7 +26,7 @@ class CreateHospitalsTable extends Migration
             $table->string('type');
             $table->string('ownership');
             $table->boolean('emergency_services');
-            $table->string('human_address');
+            $table->string('human_address')->default("");
             $table->decimal('latitude', 18, 15);
             $table->decimal('longitude', 18, 15);
             $table->timestamps();

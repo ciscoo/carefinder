@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Hospital::class, 200)->create();
+        // factory(App\Hospital::class, 200)->create();
+        $this->call(HospitalTableSeeder::class);
     }
 }
