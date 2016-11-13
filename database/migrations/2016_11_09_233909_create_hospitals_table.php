@@ -15,20 +15,20 @@ class CreateHospitalsTable extends Migration
     {
         Schema::create('hospitals', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('provider_id');
-            $table->string('name');
-            $table->string('address');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zipcode');
-            $table->string('county');
-            $table->string('phone');
-            $table->string('type');
-            $table->string('ownership');
-            $table->boolean('emergency_services');
-            $table->string('human_address')->default("");
-            $table->decimal('latitude', 18, 15);
-            $table->decimal('longitude', 18, 15);
+            $table->string('provider_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('county')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('type')->nullable();
+            $table->string('ownership')->nullable();
+            $table->boolean('emergency_services')->nullable();
+            $table->string('human_address')->nullable();
+            $table->decimal('latitude', 18, 15)->nullable();
+            $table->decimal('longitude', 18, 15)->nullable();
             $table->timestamps();
         });
     }
