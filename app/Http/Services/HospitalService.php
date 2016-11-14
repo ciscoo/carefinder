@@ -224,6 +224,26 @@ class HospitalService
         return Hospital::where('name', $name)->get();
     }
 
+    /**
+     * Deletes hospital(s) by a given type.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByType(string $type)
+    {
+        return Hospital::query()->where('type', $type)->delete();
+    }
+
+    /**
+     * Retrieves a hospital by a given type.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByType(string $type) : Collection
+    {
+        return Hospital::where('type', $type)->get();
+    }
+
 
     /**
      * Convert the string to boolean.

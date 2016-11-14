@@ -254,4 +254,36 @@ class HospitalController extends Controller
             return response('', 400);
         }
     }
+
+    /**
+    * Finds a resource by resource type.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByType(string $type)
+    {
+        $hospital = $this->hospitalService->getHospitalByType($type);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by type.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByType(string $type)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByType($type);
+
+        if ($hospital) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
 }
