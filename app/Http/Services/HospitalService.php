@@ -264,6 +264,28 @@ class HospitalService
         return Hospital::where('ownership', $owner)->get();
     }
 
+    /**
+     * Deletes hospital(s) by a given emergency.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByemergency(string $emergency)
+    {
+        $emergency = $this->fixEmergencyServices($emergency);
+        return Hospital::query()->where('emergency_services', $emergency)->delete();
+    }
+
+    /**
+     * Retrieves a hospital by a given emergency.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByemergency(string $emergency) : Collection
+    {
+        $emergency = $this->fixEmergencyServices($emergency);
+        return Hospital::where('emergency_services', $emergency)->get();
+    }
+
 
     /**
      * Convert the string to boolean.

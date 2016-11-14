@@ -318,4 +318,36 @@ class HospitalController extends Controller
             return response('', 400);
         }
     }
+
+    /**
+    * Finds a resource by resource emergency.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByEmergency(string $emergency)
+    {
+        $hospital = $this->hospitalService->getHospitalByEmergency($emergency);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by emergency.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByEmergency(string $emergency)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByEmergency($emergency);
+
+        if ($hospital) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
 }

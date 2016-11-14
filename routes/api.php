@@ -46,4 +46,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/hospitals/ownership/{owner}', 'HospitalController@showbyOwner');
     Route::delete('/hospitals/ownership/{owner}', 'HospitalController@deletebyOwner');
+
+    Route::get('/hospitals/emergency/{emergency}', 'HospitalController@showbyEmergency');
+    Route::delete('/hospitals/emergency/{emergency}', 'HospitalController@deletebyEmergency');
 });
