@@ -244,6 +244,26 @@ class HospitalService
         return Hospital::where('type', $type)->get();
     }
 
+    /**
+     * Deletes hospital(s) by a given owner.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByOwner(string $owner)
+    {
+        return Hospital::query()->where('ownership', $owner)->delete();
+    }
+
+    /**
+     * Retrieves a hospital by a given owner.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByOwner(string $owner) : Collection
+    {
+        return Hospital::where('ownership', $owner)->get();
+    }
+
 
     /**
      * Convert the string to boolean.

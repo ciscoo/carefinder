@@ -286,4 +286,36 @@ class HospitalController extends Controller
             return response('', 400);
         }
     }
+
+    /**
+    * Finds a resource by resource ownership.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByOwner(string $owner)
+    {
+        $hospital = $this->hospitalService->getHospitalByOwner($owner);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by ownership.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByOwner(string $owner)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByOwner($owner);
+
+        if ($hospital) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
 }

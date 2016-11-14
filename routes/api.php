@@ -43,4 +43,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/hospitals/type/{type}', 'HospitalController@showbyType');
     Route::delete('/hospitals/type/{type}', 'HospitalController@deleteByType');
+
+    Route::get('/hospitals/ownership/{owner}', 'HospitalController@showbyOwner');
+    Route::delete('/hospitals/ownership/{owner}', 'HospitalController@deletebyOwner');
 });
