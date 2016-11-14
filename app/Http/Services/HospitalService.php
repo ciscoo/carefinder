@@ -35,6 +35,89 @@ class HospitalService
     }
 
     /**
+     * Retrieves a hospital by a given ID.
+     *
+     * @return null|Hospital - The found Hospital or null.
+     */
+    public function getHospitalById(string $id) : ?Hospital
+    {
+        $instance = null;
+
+        // If the ID contains letters, find by provider_id,
+        // otherwise find by ID.
+        if (preg_match('/[a-z]/i', $id)) {
+            $instance = Hospital::where('provider_id', $id)->first();
+        } else {
+            $instance = Hospital::where('id', $id)->first();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Updates an existing resource or creates it.
+     *
+     * @return null|Hospital - The updated or created Hospital otherwise null.
+     */
+    public function updateOrCreateHospitalById(string $id, array $data = null) : ?Hospital
+    {
+        if ($data) {
+            if (array_key_exists('emergency_services', $data)) {
+                $data['emergency_services'] = $this->fixEmergencyServices($data['emergency_services']);
+            }
+            if (array_key_exists('human_address', $data)) {
+                $data['human_address'] = $this->parseHumanAddress($data['human_address']);
+            }
+        } else {
+            return null;
+        }
+
+        $instance = null;
+
+        // If the ID contains letters, find by provider_id,
+        // otherwise find by ID.
+        if (preg_match('/[a-z]/i', $id)) {
+            $instance = Hospital::where('provider_id', $id)->first();
+        } else {
+            $instance = Hospital::where('id', $id)->first();
+        }
+
+
+        if ($instance) {
+            $instance->fill($data)->save();
+        } else {
+            $instance = new Hospital($data);
+            $instance->save();
+        }
+
+        return $instance;
+    }
+
+    /**
+     * Deletes an existing resource if exists.
+     *
+     * @return boolean - True if succesfully deleted.
+     */
+    public function deleteById($id)
+    {
+        $instance = null;
+
+        // If the ID contains letters, find by provider_id,
+        // otherwise find by ID.
+        if (preg_match('/[a-z]/i', $id)) {
+            $instance = Hospital::where('provider_id', $id)->first();
+        } else {
+            $instance = Hospital::where('id', $id)->first();
+        }
+
+        if ($instance->delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Convert the string to boolean.
      *
      * @param string $str - The string containing true or false
