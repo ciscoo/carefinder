@@ -149,6 +149,16 @@ class HospitalService
     }
 
     /**
+     * Deletes hospital(s) by a given county name.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByCounty(string $name)
+    {
+        return Hospital::query()->where('county', $name)->delete();
+    }
+
+    /**
      * Deletes hospital(s) by a given state name.
      *
      * @return int - The number of deleted Hospital(s) otherwise empty.
@@ -158,7 +168,7 @@ class HospitalService
         return Hospital::query()->where('state', $name)->delete();
     }
 
-        /**
+    /**
      * Retrieves a hospital by a given state name.
      *
      * @return Collection - The found Hospital(s) otherwise empty.
@@ -169,14 +179,31 @@ class HospitalService
     }
 
     /**
-     * Deletes hospital(s) by a given county name.
+     * Deletes hospital(s) by a given state and city name.
      *
      * @return int - The number of deleted Hospital(s) otherwise empty.
      */
-    public function deleteHospitalByCounty(string $name)
+    public function deleteHospitalByStateCity(string $state, string $city)
     {
-        return Hospital::query()->where('county', $name)->delete();
+        return Hospital::query()
+            ->where('state', $state)
+            ->where('city', $city)
+            ->delete();
     }
+
+    /**
+     * Retrieves a hospital by a given state and city name.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByStateCity(string $state, string $city) : Collection
+    {
+        return Hospital::query()
+            ->where('state', $state)
+            ->where('city', $city)
+            ->get();
+    }
+
 
     /**
      * Convert the string to boolean.

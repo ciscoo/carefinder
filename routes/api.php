@@ -34,4 +34,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/hospitals/county/{name}', 'HospitalController@showByCounty');
     Route::delete('/hospitals/county/{name}', 'HospitalController@deleteByCounty');
+
+    Route::get('/hospitals/statecity/{state}/{city}', 'HospitalController@showByStateCity');
+    Route::delete('/hospitals/statecity/{state}/{city}', 'HospitalController@deleteByStateCity');
 });

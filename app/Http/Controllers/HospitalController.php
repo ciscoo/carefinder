@@ -190,4 +190,36 @@ class HospitalController extends Controller
             return response('', 400);
         }
     }
+
+    /**
+    * Finds a resource by state name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByStateCity(string $state, string $city)
+    {
+        $hospital = $this->hospitalService->getHospitalByStateCity($state, $city);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by state name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByStateCity(string $state, string $city)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByStateCity($state, $city);
+
+        if ($hospital) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
 }
