@@ -127,7 +127,7 @@ class HospitalController extends Controller
         }
     }
 
-        /**
+    /**
     * Finds a resource by county name.
     *
     * @return \Illuminate\Http\Response
@@ -151,6 +151,38 @@ class HospitalController extends Controller
     public function deleteByCounty(string $name)
     {
         $hospital = $this->hospitalService->deleteHospitalByCounty($name);
+
+        if ($hospital) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
+
+    /**
+    * Finds a resource by state name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByState(string $name)
+    {
+        $hospital = $this->hospitalService->getHospitalByState($name);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by state name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByState(string $name)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByState($name);
 
         if ($hospital) {
             return response('', 204);

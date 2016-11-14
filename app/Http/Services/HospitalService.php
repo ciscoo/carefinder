@@ -149,6 +149,26 @@ class HospitalService
     }
 
     /**
+     * Deletes hospital(s) by a given state name.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByState(string $name)
+    {
+        return Hospital::query()->where('state', $name)->delete();
+    }
+
+        /**
+     * Retrieves a hospital by a given state name.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByState(string $name) : Collection
+    {
+        return Hospital::where('state', $name)->get();
+    }
+
+    /**
      * Deletes hospital(s) by a given county name.
      *
      * @return int - The number of deleted Hospital(s) otherwise empty.
