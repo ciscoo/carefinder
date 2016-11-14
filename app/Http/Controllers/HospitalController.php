@@ -222,4 +222,36 @@ class HospitalController extends Controller
             return response('', 400);
         }
     }
+
+    /**
+    * Finds a resource by resource name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByName(string $name)
+    {
+        $hospital = $this->hospitalService->getHospitalByName($name);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByName(string $name)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByName($name);
+
+        if ($hospital) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
 }

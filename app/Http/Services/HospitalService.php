@@ -204,6 +204,26 @@ class HospitalService
             ->get();
     }
 
+    /**
+     * Deletes hospital(s) by a given name.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByName(string $name)
+    {
+        return Hospital::query()->where('name', $name)->delete();
+    }
+
+    /**
+     * Retrieves a hospital by a given state name.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByName(string $name) : Collection
+    {
+        return Hospital::where('name', $name)->get();
+    }
+
 
     /**
      * Convert the string to boolean.
