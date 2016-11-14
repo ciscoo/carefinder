@@ -51,7 +51,7 @@ class HospitalController extends Controller
     }
 
     /**
-    * Creates a new resource.
+    * Finds a resource by ID.
     *
     * @return \Illuminate\Http\Response
     */
@@ -89,6 +89,38 @@ class HospitalController extends Controller
     public function deleteById(Request $request, string $id)
     {
         if ($this->hospitalService->deleteById($id)) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
+
+    /**
+    * Finds a resource by city name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByCity(string $name)
+    {
+        $hospital = $this->hospitalService->getHospitalByCity($name);
+
+        if ($hospital->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospital);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by city name.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByCity(string $name)
+    {
+        $hospital = $this->hospitalService->deleteHospitalByCity($name);
+
+        if ($hospital) {
             return response('', 204);
         } else {
             return response('', 400);

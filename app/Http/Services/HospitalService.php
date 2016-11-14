@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Hospital;
+use Illuminate\Database\Eloquent\Collection;
 
 class HospitalService
 {
@@ -115,6 +116,26 @@ class HospitalService
         } else {
             return false;
         }
+    }
+
+    /**
+     * Retrieves a hospital by a given city name.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByCity(string $name) : Collection
+    {
+        return Hospital::where('city', $name)->get();
+    }
+
+    /**
+     * Deletes hospital(s) by a given city name.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByCity(string $name)
+    {
+        return Hospital::query()->where('city', $name)->delete();
     }
 
     /**
