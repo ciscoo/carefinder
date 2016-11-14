@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/hospitals', 'HospitalController@index');
+    Route::post('/hospitals', 'HospitalController@createHospital');
+    Route::delete('/hospitals', 'HospitalController@deleteAllHospitals');
+});
