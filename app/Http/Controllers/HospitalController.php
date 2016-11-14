@@ -350,4 +350,36 @@ class HospitalController extends Controller
             return response('', 400);
         }
     }
+
+    /**
+    * Finds a resource by resource distance.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function showByDistance(string $latitude, string $longitude, string $distance)
+    {
+        $hospitals = $this->hospitalService->getHospitalByDistance($latitude, $longitude, $distance);
+
+        if ($hospitals->isEmpty()) {
+            return response('', 400);            
+        } else {
+            return response()->json($hospitals);            
+        }
+    }
+
+    /**
+    * Deletes resource(s) by distance.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function deleteByDistance(string $latitude, string $longitude, string $distance)
+    {
+        $hospitals = $this->hospitalService->deleteHospitalByDistance($latitude, $longitude, $distance);
+
+        if ($hospitals) {
+            return response('', 204);
+        } else {
+            return response('', 400);
+        }
+    }
 }

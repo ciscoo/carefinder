@@ -49,4 +49,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/hospitals/emergency/{emergency}', 'HospitalController@showbyEmergency');
     Route::delete('/hospitals/emergency/{emergency}', 'HospitalController@deletebyEmergency');
+
+    Route::get('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@showbyDistance');
+    Route::delete('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@deletebyDistance');
 });

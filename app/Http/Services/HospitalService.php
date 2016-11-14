@@ -286,6 +286,71 @@ class HospitalService
         return Hospital::where('emergency_services', $emergency)->get();
     }
 
+    /**
+     * Deletes hospital(s) by a given distance.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByDistance(string $latitude, string $longitude, string $distance)
+    {
+        $hospitals = $this->calculateDistance($latitude, $longitude, $distance);
+        $success = true;
+
+        foreach ($hospitals as $hospital) {
+            if(!$hospital->delete()) {
+                $success = false;
+            }
+        }
+
+        return $success;
+    }
+
+    /**
+     * Retrieves a hospital by a given emergency.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByDistance(string $latitude, string $longitude, string $distance) : Collection
+    {
+        return $this->calculateDistance($latitude, $longitude, $distance);
+    }
+
+    /**
+     * Caluclates the distance between hospitals in miles.
+     * 
+     * Based on JS code from http://andrew.hedges.name/experiments/haversine/
+     *
+     * @return array - The hospitals within a valid distance.
+     */
+    private function calculateDistance(string $latitude, string $longitude, string $distance)
+    {
+        $earthRadius = 3961;
+        $latitudeInitial = deg2rad((float) $latitude);
+        $longitudeInitial = deg2rad((float) $longitude);
+
+        $hospitals = Hospital::all();
+        $hospitalsWithinDistance = [];
+        $distance = 0.0;
+
+        foreach($hospitals as $hospital) {
+            
+            $latitudeFinal = deg2Rad((float) $hospital->latitude);
+            $longitudeFinal = deg2Rad((float) $hospital->longitude);
+
+            $latitudeDistance = $latitudeFinal - $latitudeInitial;
+            $longitudeDistance = $longitudeFinal - $longitudeInitial;
+
+            $a = sin($latitudeDistance/2)**2 + cos($latitudeInitial) * cos($latitudeFinal) * sin($longitudeDistance/2)**2;
+            $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+            $distance = floor(round($earthRadius * $c, 1000));
+
+            if ($distance <= 50.0) {
+                $hospitalsWithinDistance[] = $hospital;
+            }
+        }
+
+        return $hospitals;
+    }
 
     /**
      * Convert the string to boolean.
