@@ -139,6 +139,26 @@ class HospitalService
     }
 
     /**
+     * Retrieves a hospital by a given county name.
+     *
+     * @return Collection - The found Hospital(s) otherwise empty.
+     */
+    public function getHospitalByCounty(string $name) : Collection
+    {
+        return Hospital::where('county', $name)->get();
+    }
+
+    /**
+     * Deletes hospital(s) by a given county name.
+     *
+     * @return int - The number of deleted Hospital(s) otherwise empty.
+     */
+    public function deleteHospitalByCounty(string $name)
+    {
+        return Hospital::query()->where('county', $name)->delete();
+    }
+
+    /**
      * Convert the string to boolean.
      *
      * @param string $str - The string containing true or false
