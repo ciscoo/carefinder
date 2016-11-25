@@ -293,16 +293,14 @@ class HospitalService
      */
     public function deleteHospitalByDistance(string $latitude, string $longitude, string $distance)
     {
-        $hospitals = $this->calculateDistance($latitude, $longitude, $distance);
+        $hospitals = $this->filterHospitalsByDistance($latitude, $longitude, $distance);
         $success = true;
 
         foreach ($hospitals as $hospital) {
-            if(!$hospital->delete()) {
-                $success = false;
-            }
+            $hospital->delete();
         }
 
-        return $success;
+        return $hospitals;
     }
 
     /**
@@ -310,9 +308,33 @@ class HospitalService
      *
      * @return Collection - The found Hospital(s) otherwise empty.
      */
-    public function getHospitalByDistance(string $latitude, string $longitude, string $distance) : Collection
+    public function getHospitalByDistance(string $latitude, string $longitude, string $distance)
     {
-        return $this->calculateDistance($latitude, $longitude, $distance);
+        return $this->filterHospitalsByDistance($latitude, $longitude, $distance);
+    }
+
+
+    public function filterHospitalsByDistance(string $latitude, string $longitude, string $distance, $delete = false)
+    {
+        $distance = intval($distance);
+        $earthRadius = 3961;
+        $latitudeInitial = deg2rad((float) $latitude);
+        $longitudeInitial = deg2rad((float) $longitude);
+        $hospitals = Hospital::all();
+        $filtered = [];
+
+        foreach ($hospitals as $hospital) {
+            $validDistance = $this->calculateDistance($hospital, $latitude, $longitude, $distance);
+            if ($validDistance) {
+                $filtered[] = $hospital;
+            }
+        }
+
+        if ($delete) {
+            dd($filtered);
+        }
+
+        return collect($filtered);
     }
 
     /**
@@ -322,34 +344,21 @@ class HospitalService
      *
      * @return array - The hospitals within a valid distance.
      */
-    private function calculateDistance(string $latitude, string $longitude, string $distance)
+    private function calculateDistance(Hospital $hospital, float $latitude, float $longitude, int $distance) : int
     {
-        $earthRadius = 3961;
-        $latitudeInitial = deg2rad((float) $latitude);
-        $longitudeInitial = deg2rad((float) $longitude);
+        $meanEarthRadius = 3961;
+        $latitude = deg2rad($latitude);
+        $longitude = deg2rad($longitude);
+        $hospitalLat = deg2rad($hospital->latitude);
+        $hospitalLon = deg2rad($hospital->longitude);
 
-        $hospitals = Hospital::all();
-        $hospitalsWithinDistance = [];
-        $distance = 0.0;
+        $dlon = $hospitalLon - $longitude;
+        $dlat = $hospitalLat - $latitude;
+        $a = pow((sin($dlat/2)), 2) + cos($latitude) * cos($hospitalLat) * pow((sin($dlon/2)), 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $d = $meanEarthRadius * $c;
 
-        foreach($hospitals as $hospital) {
-            
-            $latitudeFinal = deg2Rad((float) $hospital->latitude);
-            $longitudeFinal = deg2Rad((float) $hospital->longitude);
-
-            $latitudeDistance = $latitudeFinal - $latitudeInitial;
-            $longitudeDistance = $longitudeFinal - $longitudeInitial;
-
-            $a = sin($latitudeDistance/2)**2 + cos($latitudeInitial) * cos($latitudeFinal) * sin($longitudeDistance/2)**2;
-            $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-            $distance = floor(round($earthRadius * $c, 1000));
-
-            if ($distance <= 50.0) {
-                $hospitalsWithinDistance[] = $hospital;
-            }
-        }
-
-        return $hospitals;
+        return floor($d) <= $distance;
     }
 
     /**
