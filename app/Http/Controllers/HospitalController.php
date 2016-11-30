@@ -102,10 +102,11 @@ class HospitalController extends Controller
     */
     public function showByCity(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->getHospitalByCity($name);
 
         if ($hospital->isEmpty()) {
-            return response('', 400);            
+            return response('', 404);            
         } else {
             return response()->json($hospital);            
         }
@@ -118,6 +119,7 @@ class HospitalController extends Controller
     */
     public function deleteByCity(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->deleteHospitalByCity($name);
 
         if ($hospital) {
@@ -134,6 +136,7 @@ class HospitalController extends Controller
     */
     public function showByCounty(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->getHospitalByCounty($name);
 
         if ($hospital->isEmpty()) {
@@ -150,6 +153,7 @@ class HospitalController extends Controller
     */
     public function deleteByCounty(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->deleteHospitalByCounty($name);
 
         if ($hospital) {
@@ -166,6 +170,7 @@ class HospitalController extends Controller
     */
     public function showByState(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->getHospitalByState($name);
 
         if ($hospital->isEmpty()) {
@@ -182,6 +187,7 @@ class HospitalController extends Controller
     */
     public function deleteByState(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->deleteHospitalByState($name);
 
         if ($hospital) {
@@ -198,6 +204,7 @@ class HospitalController extends Controller
     */
     public function showByStateCity(string $state, string $city)
     {
+        $city = urldecode($city);
         $hospital = $this->hospitalService->getHospitalByStateCity($state, $city);
 
         if ($hospital->isEmpty()) {
@@ -214,6 +221,7 @@ class HospitalController extends Controller
     */
     public function deleteByStateCity(string $state, string $city)
     {
+        $city = urldecode($city);
         $hospital = $this->hospitalService->deleteHospitalByStateCity($state, $city);
 
         if ($hospital) {
@@ -230,6 +238,7 @@ class HospitalController extends Controller
     */
     public function showByName(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->getHospitalByName($name);
 
         if ($hospital->isEmpty()) {
@@ -246,6 +255,7 @@ class HospitalController extends Controller
     */
     public function deleteByName(string $name)
     {
+        $name = urldecode($name);
         $hospital = $this->hospitalService->deleteHospitalByName($name);
 
         if ($hospital) {
@@ -294,6 +304,7 @@ class HospitalController extends Controller
     */
     public function showByOwner(string $owner)
     {
+        $owner = urldecode($owner);
         $hospital = $this->hospitalService->getHospitalByOwner($owner);
 
         if ($hospital->isEmpty()) {
@@ -310,6 +321,7 @@ class HospitalController extends Controller
     */
     public function deleteByOwner(string $owner)
     {
+        $owner = urldecode($owner);
         $hospital = $this->hospitalService->deleteHospitalByOwner($owner);
 
         if ($hospital) {
