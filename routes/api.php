@@ -53,3 +53,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@showbyDistance');
     Route::delete('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@deletebyDistance');
 });
+
+// Unprotected routes
+Route::group(['middleware' => 'api'], function () {
+    Route::get('/keys', 'KeyController@index');
+    Route::get('/key', 'KeyController@get');
+
+    Route::post('/key/{key}', 'KeyController@save');
+    Route::delete('/key/{key}', 'KeyController@delete');
+    Route::get('/key/{key}', 'KeyController@index');
+    Route::post('/key/{key}/{level}', 'KeyController@createLevel');
+});
