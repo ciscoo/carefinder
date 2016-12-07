@@ -16,10 +16,10 @@ class CheckLevel
      */
     public function handle($request, Closure $next)
     {
-        $auth = $request->header('x-auth-key');
+        $auth = $request->header('X-Auth-Key');
         if (!$auth) {
             return response()->json([
-                'error' => 'Missing x-auth-key header and a valid key.'
+                'error' => 'Missing X-Auth-Key header.'
             ], 400);
         }
 
@@ -29,14 +29,13 @@ class CheckLevel
                 'error' => 'Invalid key.',
             ], 400);
         }
-
-        if (!($key->level >= 2)) {
+        
+        if (!array_key_exists('level', $request->route()->getAction()) && !($key->level >= 2)) {
             return response()->json([
-                'error' => 'Insufficient privileges.',
-                'level' => $key->level
-            ], 503);
+                'error' => 'Insufficient privileges.'
+            ], 401);
         }
         
-        return $next($request);
+        return $next($request);        
     }
 }

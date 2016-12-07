@@ -13,32 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-// Unprotected routes
-Route::group(['middleware' => 'api'], function () {
-    Route::get('/key', 'KeyController@get');
-    Route::post('/key/{key}', 'KeyController@save');
-    Route::post('/key/{key}/{level}', 'KeyController@createLevel');    
-    
-    Route::get('/hospitals', 'HospitalController@index');
-    Route::get('/hospitals/id/{id}', 'HospitalController@show');
-    Route::get('/hospitals/city/{name}', 'HospitalController@showByCity');
-    Route::get('/hospitals/state/{name}', 'HospitalController@showByState');
-    Route::get('/hospitals/county/{name}', 'HospitalController@showByCounty');
-    Route::get('/hospitals/statecity/{state}/{city}', 'HospitalController@showByStateCity');
-    Route::get('/hospitals/name/{name}', 'HospitalController@showByName');
-    Route::get('/hospitals/type/{type}', 'HospitalController@showbyType');
-    Route::get('/hospitals/ownership/{owner}', 'HospitalController@showbyOwner');
-    Route::get('/hospitals/emergency/{emergency}', 'HospitalController@showbyEmergency');
-    Route::get('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@showbyDistance');
-    
-});
-
-// Protected routes
 Route::group(['middleware' => ['api', 'level']], function () {
     Route::get('/keys', 'KeyController@index');
     Route::delete('/key/{key}', 'KeyController@delete');
     Route::get('/key/{key}', 'KeyController@index');
-
     Route::post('/hospitals', 'HospitalController@createHospital');
     Route::put('/hospitals/id/{id}', 'HospitalController@updateOrCreate');
     Route::delete('/hospitals', 'HospitalController@deleteAllHospitals');    
@@ -52,4 +30,21 @@ Route::group(['middleware' => ['api', 'level']], function () {
     Route::delete('/hospitals/ownership/{owner}', 'HospitalController@deletebyOwner');
     Route::delete('/hospitals/emergency/{emergency}', 'HospitalController@deletebyEmergency');
     Route::delete('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@deletebyDistance');
+
+    Route::group(['level' => 1], function () {
+        Route::get('/key', 'KeyController@get');
+        Route::post('/key/{key}', 'KeyController@save');
+        Route::post('/key/{key}/{level}', 'KeyController@createLevel');    
+        Route::get('/hospitals', 'HospitalController@index');
+        Route::get('/hospitals/id/{id}', 'HospitalController@show');
+        Route::get('/hospitals/city/{name}', 'HospitalController@showByCity');
+        Route::get('/hospitals/state/{name}', 'HospitalController@showByState');
+        Route::get('/hospitals/county/{name}', 'HospitalController@showByCounty');
+        Route::get('/hospitals/statecity/{state}/{city}', 'HospitalController@showByStateCity');
+        Route::get('/hospitals/name/{name}', 'HospitalController@showByName');
+        Route::get('/hospitals/type/{type}', 'HospitalController@showbyType');
+        Route::get('/hospitals/ownership/{owner}', 'HospitalController@showbyOwner');
+        Route::get('/hospitals/emergency/{emergency}', 'HospitalController@showbyEmergency');
+        Route::get('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@showbyDistance');
+    });
 });
