@@ -39,7 +39,7 @@ class KeyService
     {
         $instance = Key::where('secret', $key)->first();
         if (!$instance) {
-            return null;
+            $instance = new Key(['secret' => $key]);
         }
         $instance->level = $level;
         $instance->save();
