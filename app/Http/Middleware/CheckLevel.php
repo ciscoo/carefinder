@@ -16,15 +16,13 @@ class CheckLevel
      */
     public function handle($request, Closure $next)
     {
-        $auth = $request->header('X-Auth-Key');
-        if (!$auth) {
+        if (!$request->header('X-Auth-Key')) {
             return response()->json([
                 'error' => 'Missing X-Auth-Key header.'
             ], 400);
         }
 
-        $key = Key::where('secret', $auth)->first();
-        if (!$key) {
+        if (!Key::where('secret', $auth)->first()) {
             return response()->json([
                 'error' => 'Invalid key.',
             ], 400);

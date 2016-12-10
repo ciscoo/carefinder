@@ -13,7 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => ['api', 'level']], function () {
+// Unprotected
+Route::get('/key', 'KeyController@get');
+Route::post('/key/{key}', 'KeyController@save');
+
+// Protected
+Route::group(['middleware' => 'level'], function () {
     Route::get('/keys', 'KeyController@index');
     Route::delete('/key/{key}', 'KeyController@delete');
     Route::get('/key/{key}', 'KeyController@index');
@@ -32,8 +37,6 @@ Route::group(['middleware' => ['api', 'level']], function () {
     Route::delete('/hospitals/latlon/{latitude}/{longitude}/{distance}', 'HospitalController@deletebyDistance');
 
     Route::group(['level' => 1], function () {
-        Route::get('/key', 'KeyController@get');
-        Route::post('/key/{key}', 'KeyController@save');
         Route::post('/key/{key}/{level}', 'KeyController@createLevel');    
         Route::get('/hospitals', 'HospitalController@index');
         Route::get('/hospitals/id/{id}', 'HospitalController@show');
