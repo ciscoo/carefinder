@@ -22,7 +22,8 @@ class CheckLevel
             ], 400);
         }
 
-        if (!Key::where('secret', $request->header('X-Auth-Key'))->first()) {
+        $key = Key::where('secret', $request->header('X-Auth-Key'))->first();
+        if (!$key) {
             return response()->json([
                 'error' => 'Invalid key.',
             ], 400);
