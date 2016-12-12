@@ -15,8 +15,12 @@ class HospitalService
      */
     public function createHospital(array $data) : ?Hospital
     {
-        $data['emergency_services'] = $this->fixEmergencyServices($data['emergency_services']);
-        $data['human_address'] = $this->parseHumanAddress($data['human_address']);
+        if (array_key_exists('emergency_services', $data)) {
+            $data['emergency_services'] = $this->fixEmergencyServices($data['emergency_services']);
+        }
+        if (array_key_exists('human_address', $data)) {
+            $data['human_address'] = $this->parseHumanAddress($data['human_address']);
+        }
         $instance = new Hospital($data);
         $instance->save();
         
